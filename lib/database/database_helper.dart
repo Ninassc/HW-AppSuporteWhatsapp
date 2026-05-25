@@ -1,0 +1,67 @@
+import 'package:app_suporte_whatsapp/models/cliente.dart';
+import 'package:app_suporte_whatsapp/models/aparelho.dart';
+import 'package:app_suporte_whatsapp/models/atendimento.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+class DatabaseHelper {
+  static Database? _database;
+
+  Future<Database> get database async {
+    if (_database != null) {
+      return _database!;
+    }
+
+    _database = await initDatabase();
+
+    return _database!;
+  }
+
+  Future<Database> initDatabase() async {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+
+    final path =
+        r'\\hwfs01\Area Publica\Suporte (Disco T)\Suporte\AppsSuporte\Databases\AppSuporteWhatsapp\suporte.db';
+
+    return await databaseFactory.openDatabase(path);
+  }
+
+  Future<List<Cliente>> getClientes() async {
+    final db = await database;
+
+    final List<Map<String, dynamic>> maps = await db.query('clientes');
+
+    return List.generate(maps.length, (i) {
+      return Cliente.fromMap(maps[i]);
+    });
+  }
+
+  Future<List<Aparelho>> getAparelhosCliente(int clienteId) async {
+    final db = await database;
+
+    final maps = await db.query(
+      'aparelhos',
+      where: 'cliente_id = ?',
+      whereArgs: [clienteId],
+    );
+
+    return List.generate(maps.length, (i) {
+      return Aparelho.fromMap(maps[i]);
+    });
+  }
+
+  Future<List<Atendimento>> getAtendimentosAparelho(int aparelhoId) async {
+    final db = await database;
+
+    final maps = await db.query(
+      'atendimentos',
+      where: 'aparelho_id = ?',
+      whereArgs: [aparelhoId],
+      orderBy: 'data_contato DESC',
+    );
+
+    return List.generate(maps.length, (i) {
+      return Atendimento.fromMap(maps[i]);
+    });
+  }
+}
