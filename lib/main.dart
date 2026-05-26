@@ -18,8 +18,28 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF028FCF)),
+
         textTheme: TextTheme(
           bodyMedium: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+
+        appBarTheme: AppBarTheme(
+          titleTextStyle: TextStyle(
+            fontFamily: 'Poppins',
+            color: Colors.white,
+            fontSize: 32,
+            fontWeight: FontWeight.w600
+          ),
+
+          iconTheme: IconThemeData(
+            color: Colors.white
+          )
+        ),
+
+        textSelectionTheme: const TextSelectionThemeData(
+          selectionColor: Colors.white24,
+          selectionHandleColor: Colors.white24,
+          cursorColor: Color(0xFF028FCF),
         ),
       ),
       home: HomePage(),

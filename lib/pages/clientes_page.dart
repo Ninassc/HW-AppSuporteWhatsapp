@@ -1,3 +1,4 @@
+import 'package:app_suporte_whatsapp/widgets/card_clientes.dart';
 import 'package:flutter/material.dart';
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/cliente.dart';
@@ -56,28 +57,7 @@ class _ClientesPageState extends State<ClientesPage> {
               itemBuilder: (context, index) {
                 final cliente = clientes[index];
 
-                return SizedBox(
-                  height: 150,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    color:const Color(0xFF028FCF) ,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: 
-                          Column(
-                            spacing: 10,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Nome: ${cliente.nome}"),
-                              Text("Contato: ${cliente.whatsapp}"),
-                              Text("Empresa: ${cliente.empresa}"),
-                            ],
-                          ),
-                    ),
-                  ),
-                );
+                return CardClientes(cliente: cliente, nome: cliente.nome, whatsapp: cliente.whatsapp, empresa: cliente.empresa);
               },
             ),
           ),
