@@ -64,4 +64,16 @@ class DatabaseHelper {
       return Atendimento.fromMap(maps[i]);
     });
   }
+
+  Future<void> insertAtendimento(Atendimento atendimento) async {
+    final db = await database;
+
+    await db.insert('atendimentos', {
+      'aparelho_id': atendimento.aparelhoId,
+      'problema': atendimento.problema,
+      'observacoes': atendimento.observacoes,
+      'status': atendimento.status,
+      'solucao': atendimento.solucao,
+    });
+  }
 }

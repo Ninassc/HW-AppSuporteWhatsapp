@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/models/atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/card_atendimento.dart';
+import 'package:app_suporte_whatsapp/widgets/dialog_novo_atendimento.dart';
+import 'package:app_suporte_whatsapp/widgets/dropdown_button.dart';
+import 'package:app_suporte_whatsapp/widgets/input_novo_atendimento.dart';
 import 'package:flutter/material.dart';
 
 class HistoricoAtendimentosPage extends StatefulWidget {
@@ -15,6 +20,21 @@ class HistoricoAtendimentosPage extends StatefulWidget {
 
 class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
   List<Atendimento> atendimentos = [];
+
+  final TextEditingController _controllerProblema = TextEditingController();
+  final TextEditingController _controllerObservacoes = TextEditingController();
+  final TextEditingController _controllerSolucao = TextEditingController();
+
+  String statusSelecionado = "Em atendimento";
+
+  @override
+  void dispose() {
+    _controllerProblema.dispose();
+    _controllerObservacoes.dispose();
+    _controllerSolucao.dispose();
+
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -33,6 +53,37 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
     setState(() {
       atendimentos = listaAtendimentos;
     });
+  }
+
+  void salvarAtendimento() async {
+    if (_controllerProblema.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Informe o problema.")));
+
+      return;
+    }
+
+    final atendimento = Atendimento(
+      aparelhoId: widget.aparelho.id!,
+      problema: _controllerProblema.text,
+      observacoes: _controllerObservacoes.text,
+      status: statusSelecionado,
+      solucao: _controllerSolucao.text,
+      dataContato: '',
+    );
+
+    try {
+      final db = DatabaseHelper();
+
+      await db.insertAtendimento(atendimento);
+
+      Navigator.of(context).pop();
+
+      await carregarAtendimentos();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -85,21 +136,16 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return Dialog(
-                              child: Container(
-                                width: 650,
-                                height: 600,
-                                padding: EdgeInsets.all(20),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [Text("Novo Atendimento",
-                                  style: TextStyle(
-                                    color: const Color(0xFF028FCF),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600
-                                  ),)],
-                                ),
-                              ),
+                            return DialogNovoAtendimento(
+                              controllerProblema: _controllerProblema,
+                              controllerObservacoes: _controllerObservacoes,
+                              controllerSolucao: _controllerSolucao,
+                              salvarAtendimento: salvarAtendimento,
+                              onStatusChanged: (status) {
+                                setState(() {
+                                  statusSelecionado = status;
+                                });
+                              },
                             );
                           },
                         );

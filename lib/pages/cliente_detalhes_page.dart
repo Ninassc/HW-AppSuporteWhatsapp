@@ -89,6 +89,14 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
                     },
                   ),
                 ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FloatingActionButton(onPressed: (){},
+                    child: Icon(Icons.add),)
+                  ],
+                )
               ],
             ),
           ),
