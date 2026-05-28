@@ -1,6 +1,7 @@
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/widgets/card_aparelhos.dart';
+import 'package:app_suporte_whatsapp/widgets/dialog_novo_aparelho.dart';
 import 'package:flutter/material.dart';
 import '../models/cliente.dart';
 
@@ -15,11 +16,19 @@ class ClienteDetalhesPage extends StatefulWidget {
 class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
   List<Aparelho> aparelhos = [];
 
+  final TextEditingController controllerAparelho = TextEditingController();
+
   @override
   void initState() {
     super.initState();
 
     carregarAparelhos();
+  }
+
+  @override
+  void dispose() {
+    controllerAparelho.dispose();
+    super.dispose();
   }
 
   Future<void> carregarAparelhos() async {
@@ -30,6 +39,33 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
     setState(() {
       aparelhos = listaAparelhos;
     });
+  }
+
+  void salvarAparelhos() async {
+    if (controllerAparelho.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Informe o Número de Série.")));
+
+      return;
+    }
+
+    try {
+      final db = DatabaseHelper();
+
+      final aparelho = Aparelho(
+        clienteId: widget.cliente.id!,
+        numeroSerie: controllerAparelho.text,
+      );
+
+      await db.insertAparelho(aparelho);
+
+      Navigator.of(context).pop();
+
+      await carregarAparelhos();
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -93,10 +129,22 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    FloatingActionButton(onPressed: (){},
-                    child: Icon(Icons.add),)
+                    FloatingActionButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogNovoAparelho(
+                              controllerAparelho: controllerAparelho,
+                              salvarAparelhos: salvarAparelhos,
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(Icons.add),
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),

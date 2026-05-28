@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/models/atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/card_atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/dialog_novo_atendimento.dart';
-import 'package:app_suporte_whatsapp/widgets/dropdown_button.dart';
-import 'package:app_suporte_whatsapp/widgets/input_novo_atendimento.dart';
 import 'package:flutter/material.dart';
 
 class HistoricoAtendimentosPage extends StatefulWidget {
@@ -70,7 +66,7 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
       observacoes: _controllerObservacoes.text,
       status: statusSelecionado,
       solucao: _controllerSolucao.text,
-      dataContato: '',
+      dataContato: DateTime.now().toIso8601String(),
     );
 
     try {

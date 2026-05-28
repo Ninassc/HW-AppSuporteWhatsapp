@@ -74,6 +74,27 @@ class DatabaseHelper {
       'observacoes': atendimento.observacoes,
       'status': atendimento.status,
       'solucao': atendimento.solucao,
+      'data_contato': atendimento.dataContato,
     });
+  }
+
+  Future<void> insertAparelho(Aparelho aparelho) async {
+    final db = await database;
+
+    await db.insert('aparelhos', {
+      'cliente_id' : aparelho.clienteId,
+      'numero_serie' : aparelho.numeroSerie
+    });
+  }
+
+  Future<void> insertCliente(Cliente cliente) async {
+    final db = await database;
+
+    await db.insert('clientes', {
+      'nome' : cliente.nome,
+      'whatsapp' : cliente.whatsapp,
+      'empresa' : cliente.empresa
+    });
+
   }
 }
