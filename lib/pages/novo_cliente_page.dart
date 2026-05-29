@@ -1,6 +1,5 @@
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/cliente.dart';
-import 'package:app_suporte_whatsapp/widgets/input_novo_atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/input_novo_cliente.dart';
 import 'package:flutter/material.dart';
 
@@ -61,6 +60,7 @@ class _NovoClientePageState extends State<NovoClientePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 202, 217, 235),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -101,6 +101,7 @@ class _NovoClientePageState extends State<NovoClientePage> {
                             controller: controllerNome,
                             texto: "Nome",
                           ),
+                          
                           InputNovoCliente(
                             controller: controllerWhatsapp,
                             texto: "Whatsapp",
@@ -112,7 +113,7 @@ class _NovoClientePageState extends State<NovoClientePage> {
                           ),
 
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
                                 width: 200,
@@ -126,29 +127,6 @@ class _NovoClientePageState extends State<NovoClientePage> {
                                   ),
                                   child: Text(
                                     "Adicionar",
-                                    style: TextStyle(
-                                      color: const Color(0xFF028FCF),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                              SizedBox(
-                                width: 200,
-                                height: 40,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    controllerNome.clear();
-                                    controllerWhatsapp.clear();
-                                    controllerEmpresa.clear();
-
-                                    Navigator.of(context).pop();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  child: Text(
-                                    "Cancelar",
                                     style: TextStyle(
                                       color: const Color(0xFF028FCF),
                                     ),

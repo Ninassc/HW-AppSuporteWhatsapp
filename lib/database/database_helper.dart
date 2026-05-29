@@ -65,6 +65,30 @@ class DatabaseHelper {
     });
   }
 
+  Future<int> getTotalClientes() async {
+    final db = await database;
+
+    final result = await db.rawQuery('SELECT COUNT(*) as total FROM clientes');
+
+    return result.first['total'] as int;
+  }
+
+   Future<int> getTotalAparelhos() async {
+    final db = await database;
+
+    final result = await db.rawQuery('SELECT COUNT(*) as total FROM aparelhos');
+
+    return result.first['total'] as int;
+  }
+
+   Future<int> getTotalAtendimentos() async {
+    final db = await database;
+
+    final result = await db.rawQuery('SELECT COUNT(*) as total FROM atendimentos');
+
+    return result.first['total'] as int;
+  }
+
   Future<void> insertAtendimento(Atendimento atendimento) async {
     final db = await database;
 
@@ -82,8 +106,8 @@ class DatabaseHelper {
     final db = await database;
 
     await db.insert('aparelhos', {
-      'cliente_id' : aparelho.clienteId,
-      'numero_serie' : aparelho.numeroSerie
+      'cliente_id': aparelho.clienteId,
+      'numero_serie': aparelho.numeroSerie,
     });
   }
 
@@ -91,10 +115,9 @@ class DatabaseHelper {
     final db = await database;
 
     await db.insert('clientes', {
-      'nome' : cliente.nome,
-      'whatsapp' : cliente.whatsapp,
-      'empresa' : cliente.empresa
+      'nome': cliente.nome,
+      'whatsapp': cliente.whatsapp,
+      'empresa': cliente.empresa,
     });
-
   }
 }
