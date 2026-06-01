@@ -82,6 +82,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget homeContent() {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 202, 217, 235),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -100,7 +101,15 @@ class _HomePageState extends State<HomePage> {
                 spacing: 20,
                 children: [
                   Expanded(
-                    child: CardHome(titulo: "Clientes", total: totalClientes),
+                    child: CardHome(
+                      titulo: "Clientes",
+                      total: totalClientes,
+                      paginaSelecionada: (pagina) {
+                        setState(() {
+                          paginaSelecionada = pagina;
+                        });
+                      },
+                    ),
                   ),
                   Expanded(
                     child: CardHome(titulo: "Aparelhos", total: totalAparelhos),

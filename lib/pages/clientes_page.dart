@@ -57,7 +57,12 @@ class _ClientesPageState extends State<ClientesPage> {
               itemBuilder: (context, index) {
                 final cliente = clientes[index];
 
-                return CardClientes(cliente: cliente, nome: cliente.nome, whatsapp: cliente.whatsapp, empresa: cliente.empresa);
+                return CardClientes(
+                  cliente: cliente,
+                  nome: cliente.nome,
+                  whatsapp: cliente.whatsapp,
+                  empresa: cliente.empresa,
+                );
               },
             ),
           ),
