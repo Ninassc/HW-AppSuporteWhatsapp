@@ -9,8 +9,7 @@ class CardAtendimento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = DateTime.parse(atendimento.dataContato);
-
-
+    
     return SafeArea(
       child: Card(
         child: Padding(

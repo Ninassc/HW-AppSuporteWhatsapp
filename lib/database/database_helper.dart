@@ -65,6 +65,27 @@ class DatabaseHelper {
     });
   }
 
+  Future<List<Atendimento>> getAtendimentosCliente(int clienteId) async {
+    final db = await database;
+
+    final maps = await db.rawQuery(
+      '''
+    SELECT atendimentos.*
+    FROM atendimentos
+
+    INNER JOIN aparelhos
+    ON atendimentos.aparelho_id = aparelhos.id
+
+    WHERE aparelhos.cliente_id = ?
+
+    ORDER BY atendimentos.data_contato DESC
+    ''',
+      [clienteId],
+    );
+
+    return List.generate(maps.length, (i) => Atendimento.fromMap(maps[i]));
+  }
+
   Future<int> getTotalClientes() async {
     final db = await database;
 
@@ -73,7 +94,7 @@ class DatabaseHelper {
     return result.first['total'] as int;
   }
 
-   Future<int> getTotalAparelhos() async {
+  Future<int> getTotalAparelhos() async {
     final db = await database;
 
     final result = await db.rawQuery('SELECT COUNT(*) as total FROM aparelhos');
@@ -81,10 +102,12 @@ class DatabaseHelper {
     return result.first['total'] as int;
   }
 
-   Future<int> getTotalAtendimentos() async {
+  Future<int> getTotalAtendimentos() async {
     final db = await database;
 
-    final result = await db.rawQuery('SELECT COUNT(*) as total FROM atendimentos');
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as total FROM atendimentos',
+    );
 
     return result.first['total'] as int;
   }

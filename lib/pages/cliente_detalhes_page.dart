@@ -1,7 +1,9 @@
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/aparelho.dart';
+import 'package:app_suporte_whatsapp/pages/historico_todos_atendimentos_cliente_page.dart';
 import 'package:app_suporte_whatsapp/widgets/card_aparelhos.dart';
 import 'package:app_suporte_whatsapp/widgets/dialog_novo_aparelho.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../models/cliente.dart';
 
@@ -15,6 +17,7 @@ class ClienteDetalhesPage extends StatefulWidget {
 
 class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
   List<Aparelho> aparelhos = [];
+  
 
   final TextEditingController controllerAparelho = TextEditingController();
 
@@ -32,13 +35,20 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
   }
 
   Future<void> carregarAparelhos() async {
-    final db = DatabaseHelper();
+    try {
+      final db = DatabaseHelper();
 
-    final listaAparelhos = await db.getAparelhosCliente(widget.cliente.id!);
+      final listaAparelhos = await db.getAparelhosCliente(widget.cliente.id!);
 
-    setState(() {
-      aparelhos = listaAparelhos;
-    });
+      setState(() {
+        aparelhos = listaAparelhos;
+      });
+      
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
+    }
   }
 
   void salvarAparelhos() async {
@@ -124,6 +134,18 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
                       return CardAparelhos(aparelho: aparelho);
                     },
                   ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, 
+                    MaterialPageRoute(builder: (context) => HistoricoTodosAtendimentosClientePage(cliente: widget.cliente)));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                    elevation: 5,
+                  ),
+                  child: Text("Ver Todos os Históricos"),
                 ),
 
                 Row(
