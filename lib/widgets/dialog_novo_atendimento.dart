@@ -6,7 +6,8 @@ class DialogNovoAtendimento extends StatelessWidget {
   final TextEditingController controllerProblema;
   final TextEditingController controllerObservacoes;
   final TextEditingController controllerSolucao;
-  final VoidCallback salvarAtendimento;
+  final VoidCallback? salvarAtendimento;
+  final VoidCallback? atualizarAtendimento;
 
   final Function(String) onStatusChanged;
 
@@ -15,7 +16,8 @@ class DialogNovoAtendimento extends StatelessWidget {
     required this.controllerProblema,
     required this.controllerObservacoes,
     required this.controllerSolucao,
-    required this.salvarAtendimento,
+    this.salvarAtendimento,
+    this.atualizarAtendimento,
     required this.onStatusChanged,
   });
 
@@ -30,7 +32,7 @@ class DialogNovoAtendimento extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Novo Atendimento",
+              salvarAtendimento != null ? "Novo Atendimento" : "Atualizar Atendimento",
               style: TextStyle(
                 color: const Color(0xFF028FCF),
                 fontSize: 30,
@@ -75,7 +77,7 @@ class DialogNovoAtendimento extends StatelessWidget {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
-                      salvarAtendimento();
+                      (salvarAtendimento ?? atualizarAtendimento)?.call();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF028FCF),

@@ -17,9 +17,10 @@ class ClienteDetalhesPage extends StatefulWidget {
 
 class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
   List<Aparelho> aparelhos = [];
-  
 
   final TextEditingController controllerAparelho = TextEditingController();
+  final TextEditingController controllerAparelhoAtualizado =
+      TextEditingController();
 
   @override
   void initState() {
@@ -31,6 +32,7 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
   @override
   void dispose() {
     controllerAparelho.dispose();
+    controllerAparelhoAtualizado.dispose();
     super.dispose();
   }
 
@@ -43,7 +45,6 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
       setState(() {
         aparelhos = listaAparelhos;
       });
-      
     } catch (e) {
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -70,11 +71,35 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
 
       await db.insertAparelho(aparelho);
 
-      Navigator.of(context).pop();
+      Navigator.pop(context);
 
       await carregarAparelhos();
     } catch (e) {
-      debugPrint(e.toString());
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
+    }
+  }
+
+  Future<void> editarAparelho(Aparelho aparelho) async {
+    try {
+      final aparelhoAtualizado = Aparelho(
+        id: aparelho.id,
+        clienteId: aparelho.clienteId,
+        numeroSerie: controllerAparelhoAtualizado.text,
+      );
+
+      final db = DatabaseHelper();
+
+      await db.updateAparelho(aparelhoAtualizado);
+
+      Navigator.pop(context);
+
+      await carregarAparelhos();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
     }
   }
 
@@ -131,15 +156,29 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
 
                     itemBuilder: (context, index) {
                       final aparelho = aparelhos[index];
-                      return CardAparelhos(aparelho: aparelho);
+                      return CardAparelhos(
+                        aparelho: aparelho,
+                        controllerAparelhoAtualizado:
+                            controllerAparelhoAtualizado,
+                        editarAparelho: () {
+                          editarAparelho(aparelho);
+                        },
+                      );
                     },
                   ),
                 ),
 
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, 
-                    MaterialPageRoute(builder: (context) => HistoricoTodosAtendimentosClientePage(cliente: widget.cliente)));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            HistoricoTodosAtendimentosClientePage(
+                              cliente: widget.cliente,
+                            ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),

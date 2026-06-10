@@ -1,16 +1,18 @@
+import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:flutter/material.dart';
 
-class DialogNovoAparelho extends StatefulWidget {
+class DialogNovoAparelho extends StatelessWidget {
   final TextEditingController controllerAparelho;
-  final VoidCallback salvarAparelhos;
+  final VoidCallback? salvarAparelhos;
+  final VoidCallback? editarAparelho;
 
-  const DialogNovoAparelho({super.key, required this.controllerAparelho, required this.salvarAparelhos});
+  const DialogNovoAparelho({
+    super.key,
+    required this.controllerAparelho,
+    this.salvarAparelhos,
+    this.editarAparelho,
+  });
 
-  @override
-  State<DialogNovoAparelho> createState() => _DialogNovoAparelhoState();
-}
-
-class _DialogNovoAparelhoState extends State<DialogNovoAparelho> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -22,7 +24,7 @@ class _DialogNovoAparelhoState extends State<DialogNovoAparelho> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Novo Aparelho",
+              salvarAparelhos != null ? "Novo Aparelho" : "Editar Aparelho",
               style: TextStyle(
                 color: const Color(0xFF028FCF),
                 fontSize: 30,
@@ -37,7 +39,7 @@ class _DialogNovoAparelhoState extends State<DialogNovoAparelho> {
                 children: [
                   DefaultSelectionStyle(
                     child: TextField(
-                      controller: widget.controllerAparelho,
+                      controller: controllerAparelho,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
@@ -63,8 +65,9 @@ class _DialogNovoAparelhoState extends State<DialogNovoAparelho> {
                         height: 40,
                         child: ElevatedButton(
                           onPressed: () {
-                            widget.salvarAparelhos();
+                            (salvarAparelhos ?? editarAparelho)?.call();
                           },
+
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF028FCF),
                           ),
@@ -80,7 +83,7 @@ class _DialogNovoAparelhoState extends State<DialogNovoAparelho> {
                         height: 40,
                         child: ElevatedButton(
                           onPressed: () {
-                            widget.controllerAparelho.clear();
+                            controllerAparelho.clear();
                             Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(

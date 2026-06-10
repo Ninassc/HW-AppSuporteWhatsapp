@@ -3,6 +3,7 @@ import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/models/atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/card_atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/dialog_novo_atendimento.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HistoricoAtendimentosPage extends StatefulWidget {
@@ -82,6 +83,31 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
     }
   }
 
+  Future<void> atualizarAtendimento(Atendimento atendimento) async {
+    try {
+      final atendimentoAtualizado = Atendimento(
+        id: atendimento.id,
+        aparelhoId: widget.aparelho.id!,
+        problema: _controllerProblema.text,
+        observacoes: _controllerObservacoes.text,
+        status: statusSelecionado,
+        dataContato: DateTime.now().toIso8601String(),
+      );
+
+      final db = DatabaseHelper();
+
+      await db.updateAtendimento(atendimentoAtualizado);
+
+      Navigator.pop(context);
+
+      await carregarAtendimentos();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +146,16 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
                     itemBuilder: (context, index) {
                       final atendimento = atendimentos[index];
 
-                      return CardAtendimento(atendimento: atendimento);
+                      return CardAtendimento(
+                        atendimento: atendimento,
+
+                        controllerProblema: _controllerProblema,
+                        controllerObservacoes: _controllerObservacoes,
+                        controllerSolucao: _controllerSolucao,
+                        atualizarAtendimento: () {
+                          atualizarAtendimento(atendimento);
+                        },
+                      );
                     },
                   ),
                 ),

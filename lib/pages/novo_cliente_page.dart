@@ -63,35 +63,35 @@ class _NovoClientePageState extends State<NovoClientePage> {
       backgroundColor: const Color.fromARGB(255, 202, 217, 235),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Cadastrar novo cliente",
-              style: TextStyle(
-                color: const Color(0xFF028FCF),
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Cadastrar Novo Cliente",
+                style: TextStyle(
+                  color: const Color(0xFF028FCF),
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-
-            SizedBox(height: 20),
-
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
+          
+              SizedBox(height: 20),
+          
+              Container(
+                width: 800,
+                height: 300,
                 decoration: BoxDecoration(
                   color: const Color(0xFF028FCF),
                   borderRadius: BorderRadius.circular(20),
                 ),
-
+              
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: FractionallySizedBox(
-                      widthFactor: 0.7,
+                      widthFactor: 1,
                       child: Column(
                         spacing: 20,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -106,12 +106,12 @@ class _NovoClientePageState extends State<NovoClientePage> {
                             controller: controllerWhatsapp,
                             texto: "Whatsapp",
                           ),
-
+              
                           InputNovoCliente(
                             controller: controllerEmpresa,
                             texto: "Empresa",
                           ),
-
+              
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -141,8 +141,8 @@ class _NovoClientePageState extends State<NovoClientePage> {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

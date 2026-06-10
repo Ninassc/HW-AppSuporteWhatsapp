@@ -143,4 +143,33 @@ class DatabaseHelper {
       'empresa': cliente.empresa,
     });
   }
+
+  Future<void> updateAparelho(Aparelho aparelho) async {
+    final db = await database;
+
+    await db.update(
+      'aparelhos',
+      {'numero_serie': aparelho.numeroSerie},
+
+      where: 'id = ?',
+      whereArgs: [aparelho.id],
+    );
+  }
+
+  Future<void> updateAtendimento(Atendimento atendimento) async {
+    final db = await database;
+
+    await db.update(
+      'atendimentos',
+      {
+        'problema': atendimento.problema,
+        'observacoes': atendimento.observacoes,
+        'status': atendimento.status,
+        'solucao': atendimento.solucao,
+      },
+
+      where: 'id = ?',
+      whereArgs: [atendimento.id],
+    );
+  }
 }

@@ -1,10 +1,19 @@
 import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/pages/historico_atendimentos_page.dart';
+import 'package:app_suporte_whatsapp/widgets/dialog_novo_aparelho.dart';
 import 'package:flutter/material.dart';
 
 class CardAparelhos extends StatelessWidget {
   final Aparelho aparelho;
-  const CardAparelhos({super.key, required this.aparelho});
+  final TextEditingController controllerAparelhoAtualizado;
+  final VoidCallback editarAparelho;
+
+  const CardAparelhos({
+    super.key,
+    required this.aparelho,
+    required this.controllerAparelhoAtualizado,
+    required this.editarAparelho,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +48,26 @@ class CardAparelhos extends StatelessWidget {
                 );
               },
               child: const Text("Ver Histórico"),
+            ),
+
+            const SizedBox(width: 15),
+
+            ElevatedButton.icon(
+              onPressed: () {
+                controllerAparelhoAtualizado.text = aparelho.numeroSerie;
+
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return DialogNovoAparelho(
+                      controllerAparelho: controllerAparelhoAtualizado,
+                      editarAparelho: editarAparelho
+                    );
+                  },
+                );
+              },
+              label: Text("Editar"),
+              icon: Icon(Icons.edit),
             ),
           ],
         ),
