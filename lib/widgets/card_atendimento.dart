@@ -1,4 +1,3 @@
-import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/models/atendimento.dart';
 import 'package:app_suporte_whatsapp/widgets/dialog_novo_atendimento.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,7 @@ class CardAtendimento extends StatefulWidget {
     this.controllerProblema,
     this.controllerObservacoes,
     this.controllerSolucao,
-    this.atualizarAtendimento
+    this.atualizarAtendimento,
   });
 
   @override
@@ -75,41 +74,53 @@ class _CardAtendimentoState extends State<CardAtendimento> {
                 ),
               ),
 
-              if (widget.controllerProblema != null &&
-                  widget.controllerObservacoes != null &&
-                  widget.controllerSolucao != null)
-                ElevatedButton.icon(
-                  onPressed: () {
+              Column(
+                children: [
+                  if (widget.controllerProblema != null &&
+                      widget.controllerObservacoes != null &&
+                      widget.controllerSolucao != null)
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        widget.controllerProblema!.text =
+                            widget.atendimento.problema;
 
-                    widget.controllerProblema!.text =
-                        widget.atendimento.problema;
+                        widget.controllerObservacoes!.text =
+                            widget.atendimento.observacoes;
 
-                    widget.controllerObservacoes!.text =
-                        widget.atendimento.observacoes;
+                        widget.controllerSolucao!.text =
+                            widget.atendimento.solucao ?? '';
 
-                    widget.controllerSolucao!.text =
-                        widget.atendimento.solucao ?? '';
-
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return DialogNovoAtendimento(
-                          controllerProblema: widget.controllerProblema!,
-                          controllerObservacoes: widget.controllerObservacoes!,
-                          controllerSolucao: widget.controllerSolucao!,
-                          atualizarAtendimento: widget.atualizarAtendimento,
-                          onStatusChanged: (status) {
-                            setState(() {
-                              statusSelecionado = status;
-                            });
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return DialogNovoAtendimento(
+                              controllerProblema: widget.controllerProblema!,
+                              controllerObservacoes:
+                                  widget.controllerObservacoes!,
+                              controllerSolucao: widget.controllerSolucao!,
+                              atualizarAtendimento: widget.atualizarAtendimento,
+                              onStatusChanged: (status) {
+                                setState(() {
+                                  statusSelecionado = status;
+                                });
+                              },
+                            );
                           },
                         );
                       },
-                    );
-                  },
-                  label: Text("Editar"),
-                  icon: Icon(Icons.edit),
-                ),
+                      label: Text("Editar"),
+                      icon: Icon(Icons.edit),
+                    ),
+
+                  SizedBox(height: 20),
+
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    label: Text("Excluir"),
+                    icon: Icon(Icons.delete),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

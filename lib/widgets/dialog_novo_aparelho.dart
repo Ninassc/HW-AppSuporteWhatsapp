@@ -1,4 +1,3 @@
-import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:flutter/material.dart';
 
 class DialogNovoAparelho extends StatelessWidget {

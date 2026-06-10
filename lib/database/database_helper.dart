@@ -172,4 +172,14 @@ class DatabaseHelper {
       whereArgs: [atendimento.id],
     );
   }
+
+  Future<void> deleteAtendimento(Atendimento atendimento) async {
+    final db = await database;
+
+    await db.delete(
+      'atendimentos',
+      where: 'id = ?',
+      whereArgs: [atendimento.id],
+    );
+  }
 }

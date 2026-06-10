@@ -108,6 +108,22 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
     }
   }
 
+  Future<void> deletarAtendimento(Atendimento atendimento) async {
+    try {
+      final db = DatabaseHelper();
+
+      await db.deleteAtendimento(atendimento);
+
+      Navigator.pop(context);
+
+      await carregarAtendimentos();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
