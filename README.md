@@ -195,13 +195,13 @@ Atendimento
 ### Clonar o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/app-suporte-whatsapp.git
+git clone https://github.com/Ninassc/HW-AppSuporteWhatsapp.git
 ```
 
 ### Entrar na pasta
 
 ```bash
-cd app-suporte-whatsapp
+cd HW-AppSuporteWhatsapp
 ```
 
 ### Instalar dependências
