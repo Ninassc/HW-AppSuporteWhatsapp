@@ -1,4 +1,5 @@
 import 'package:app_suporte_whatsapp/pages/cliente_detalhes_page.dart';
+import 'package:app_suporte_whatsapp/widgets/dialog_excluir.dart';
 import '../models/cliente.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class CardClientes extends StatelessWidget {
   final String nome;
   final String whatsapp;
   final String empresa;
+  final VoidCallback excluirCliente;
 
   const CardClientes({
     super.key,
@@ -14,6 +16,7 @@ class CardClientes extends StatelessWidget {
     required this.nome,
     required this.whatsapp,
     required this.empresa,
+    required this.excluirCliente
   });
 
   @override
@@ -28,7 +31,6 @@ class CardClientes extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 spacing: 10,
@@ -39,18 +41,34 @@ class CardClientes extends StatelessWidget {
                   Text("Empresa: $empresa"),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 40.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClienteDetalhesPage(cliente: cliente),
-                      ),
-                    );
-                  },
-                  child: Text("Ver Detalhes"),
+
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ClienteDetalhesPage(cliente: cliente),
+                          ),
+                        );
+                      },
+                      child: Text("Ver Detalhes"),
+                    ),
+                    SizedBox(width: 15),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        showDialog(context: context, builder: (context){
+                          return DialogExcluir(excluirCliente: excluirCliente,);
+                        });
+                      },
+                      label: Text("Excluir"),
+                      icon: Icon(Icons.delete),
+                    ),
+                  ],
                 ),
               ),
             ],

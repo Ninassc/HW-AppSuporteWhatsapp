@@ -1,4 +1,5 @@
 import 'package:app_suporte_whatsapp/widgets/card_clientes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:app_suporte_whatsapp/database/database_helper.dart';
 import 'package:app_suporte_whatsapp/models/cliente.dart';
@@ -30,6 +31,23 @@ class _ClientesPageState extends State<ClientesPage> {
     setState(() {
       clientes = listaClientes;
     });
+  }
+
+  Future<void> excluirCliente(Cliente cliente) async {
+    try {
+      final db = DatabaseHelper();
+
+      await db.deleteCliente(cliente);
+
+      await carregarClientes();
+
+      if (!mounted) return;
+      Navigator.pop(context);
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
+    }
   }
 
   @override
@@ -108,6 +126,9 @@ class _ClientesPageState extends State<ClientesPage> {
                   nome: cliente.nome,
                   whatsapp: cliente.whatsapp,
                   empresa: cliente.empresa,
+                  excluirCliente: () {
+                    excluirCliente(cliente);
+                  },
                 );
               },
             ),

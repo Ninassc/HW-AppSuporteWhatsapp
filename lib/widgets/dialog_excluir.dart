@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
-class DialogExcluirAparelho extends StatelessWidget {
-  final VoidCallback excluirAparelho;
-  const DialogExcluirAparelho({super.key, required this.excluirAparelho});
+class DialogExcluir extends StatelessWidget {
+  final VoidCallback? excluirAparelho;
+  final VoidCallback? excluirCliente;
+
+  const DialogExcluir({super.key, this.excluirAparelho, this.excluirCliente});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,9 @@ class DialogExcluirAparelho extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(
-              "Todos os atendimentos relacionados a esse aparelho também serão excluídos!",
+              excluirAparelho != null
+                  ? "Todos os atendimentos relacionados a esse aparelho também serão excluídos!"
+                  : "Todos os atendimentos e aparelhos relacionados a esse cliente também serão excluídos!",
               style: TextStyle(color: Colors.black),
               textAlign: TextAlign.center,
             ),
@@ -38,7 +42,7 @@ class DialogExcluirAparelho extends StatelessWidget {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        excluirAparelho();
+                        (excluirAparelho ?? excluirCliente)?.call();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF028FCF),

@@ -1,6 +1,6 @@
 import 'package:app_suporte_whatsapp/models/aparelho.dart';
 import 'package:app_suporte_whatsapp/pages/historico_atendimentos_page.dart';
-import 'package:app_suporte_whatsapp/widgets/dialog_excluir_aparelho.dart';
+import 'package:app_suporte_whatsapp/widgets/dialog_excluir.dart';
 import 'package:app_suporte_whatsapp/widgets/dialog_novo_aparelho.dart';
 import 'package:flutter/material.dart';
 
@@ -79,7 +79,7 @@ class CardAparelhos extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return DialogExcluirAparelho(excluirAparelho: excluirAparelho,);
+                    return DialogExcluir(excluirAparelho: excluirAparelho,);
                   },
                 );
               },
