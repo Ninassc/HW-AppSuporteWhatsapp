@@ -71,9 +71,10 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
 
       await db.insertAparelho(aparelho);
 
-      Navigator.pop(context);
-
       await carregarAparelhos();
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
     } catch (e) {
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -93,9 +94,27 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
 
       await db.updateAparelho(aparelhoAtualizado);
 
-      Navigator.pop(context);
+      await carregarAparelhos();
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint(e.toString());
+      }
+    }
+  }
+
+  Future<void> excluirAparelho(Aparelho aparelho) async {
+    try {
+      final db = DatabaseHelper();
+
+      await db.deleteAparelho(aparelho);
 
       await carregarAparelhos();
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
     } catch (e) {
       if (kDebugMode) {
         debugPrint(e.toString());
@@ -162,6 +181,9 @@ class _ClienteDetalhesPageState extends State<ClienteDetalhesPage> {
                             controllerAparelhoAtualizado,
                         editarAparelho: () {
                           editarAparelho(aparelho);
+                        },
+                        excluirAparelho: () {
+                          excluirAparelho(aparelho);
                         },
                       );
                     },

@@ -9,6 +9,8 @@ class CardAtendimento extends StatefulWidget {
   final TextEditingController? controllerObservacoes;
   final TextEditingController? controllerSolucao;
   final VoidCallback? atualizarAtendimento;
+  final VoidCallback? deletarAtendimento;
+  final ValueChanged<String>? onStatusChanged;
 
   const CardAtendimento({
     super.key,
@@ -17,6 +19,8 @@ class CardAtendimento extends StatefulWidget {
     this.controllerObservacoes,
     this.controllerSolucao,
     this.atualizarAtendimento,
+    this.deletarAtendimento,
+    this.onStatusChanged,
   });
 
   @override
@@ -27,8 +31,6 @@ class _CardAtendimentoState extends State<CardAtendimento> {
   @override
   Widget build(BuildContext context) {
     final data = DateTime.parse(widget.atendimento.dataContato);
-
-    String statusSelecionado = widget.atendimento.status;
 
     return SafeArea(
       child: Card(
@@ -90,6 +92,8 @@ class _CardAtendimentoState extends State<CardAtendimento> {
                         widget.controllerSolucao!.text =
                             widget.atendimento.solucao ?? '';
 
+                        widget.onStatusChanged?.call(widget.atendimento.status);
+
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -100,9 +104,7 @@ class _CardAtendimentoState extends State<CardAtendimento> {
                               controllerSolucao: widget.controllerSolucao!,
                               atualizarAtendimento: widget.atualizarAtendimento,
                               onStatusChanged: (status) {
-                                setState(() {
-                                  statusSelecionado = status;
-                                });
+                                widget.onStatusChanged?.call(status);
                               },
                             );
                           },
@@ -115,7 +117,7 @@ class _CardAtendimentoState extends State<CardAtendimento> {
                   SizedBox(height: 20),
 
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: widget.deletarAtendimento,
                     label: Text("Excluir"),
                     icon: Icon(Icons.delete),
                   ),

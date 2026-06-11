@@ -65,6 +65,7 @@ class DialogNovoAparelho extends StatelessWidget {
                         child: ElevatedButton(
                           onPressed: () {
                             (salvarAparelhos ?? editarAparelho)?.call();
+                            controllerAparelho.clear();
                           },
 
                           style: ElevatedButton.styleFrom(

@@ -75,6 +75,7 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
 
       await db.insertAtendimento(atendimento);
 
+      if (!mounted) return;
       Navigator.of(context).pop();
 
       await carregarAtendimentos();
@@ -91,6 +92,7 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
         problema: _controllerProblema.text,
         observacoes: _controllerObservacoes.text,
         status: statusSelecionado,
+        solucao: _controllerSolucao.text,
         dataContato: DateTime.now().toIso8601String(),
       );
 
@@ -98,6 +100,7 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
 
       await db.updateAtendimento(atendimentoAtualizado);
 
+      if (!mounted) return;
       Navigator.pop(context);
 
       await carregarAtendimentos();
@@ -113,8 +116,6 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
       final db = DatabaseHelper();
 
       await db.deleteAtendimento(atendimento);
-
-      Navigator.pop(context);
 
       await carregarAtendimentos();
     } catch (e) {
@@ -170,6 +171,14 @@ class _HistoricoAtendimentosPageState extends State<HistoricoAtendimentosPage> {
                         controllerSolucao: _controllerSolucao,
                         atualizarAtendimento: () {
                           atualizarAtendimento(atendimento);
+                        },
+                        deletarAtendimento: () {
+                          deletarAtendimento(atendimento);
+                        },
+                        onStatusChanged: (status) {
+                          setState(() {
+                            statusSelecionado = status;
+                          });
                         },
                       );
                     },
